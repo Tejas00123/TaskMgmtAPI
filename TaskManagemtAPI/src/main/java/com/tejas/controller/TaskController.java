@@ -1,5 +1,6 @@
 package com.tejas.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tejas.entity.Task;
+import com.tejas.entity.Team;
+import com.tejas.entity.User;
+import com.tejas.enums.Priority;
 import com.tejas.service.TaskService;
 
 @RestController
@@ -67,4 +72,40 @@ public class TaskController {
         return ResponseEntity.ok(updatedTask);
     }
 
+    
+    // Endpoint to get sorted tasks
+    @GetMapping("/sorted")
+    public List<Task> getSortedTasks(@RequestParam String sortBy) {
+        return taskService.getSortedTasks(sortBy);
+    }
+
+    // Endpoint to filter tasks by priority
+    @GetMapping("/priority")
+    public List<Task> getTasksByPriority(@RequestParam Priority priority) {
+        return taskService.getTasksByPriority(priority);
+    }
+
+    // Endpoint to filter tasks by due date
+    @GetMapping("/due-date")
+    public List<Task> getTasksByDueDate(@RequestParam Date dueDate) {
+        return taskService.getTasksByDueDate(dueDate);
+    }
+
+    // Endpoint to filter tasks by completion status
+    @GetMapping("/completed")
+    public List<Task> getTasksByCompletionStatus(@RequestParam boolean completed) {
+        return taskService.getTasksByCompletionStatus(completed);
+    }
+
+    // Endpoint to filter tasks by assigned user
+    @GetMapping("/assigned-user")
+    public List<Task> getTasksByAssignedUser(@RequestParam User user) {
+        return taskService.getTasksByAssignedUser(user);
+    }
+
+    // Endpoint to filter tasks by assigned team
+    @GetMapping("/assigned-team")
+    public List<Task> getTasksByAssignedTeam(@RequestParam Team team) {
+        return taskService.getTasksByAssignedTeam(team);
+    }
 }

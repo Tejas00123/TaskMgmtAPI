@@ -1,15 +1,18 @@
 package com.tejas.service;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.tejas.entity.Task;
 import com.tejas.entity.Team;
 import com.tejas.entity.User;
+import com.tejas.enums.Priority;
 import com.tejas.repository.TaskRepository;
 
 @Service
@@ -100,5 +103,31 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    
+    // Retrieve tasks sorted by a specific field
+    public List<Task> getSortedTasks(String sortBy) {
+        return taskRepository.findAll(Sort.by(sortBy));
+    }
+
+    // Additional methods for filtering tasks
+    public List<Task> getTasksByPriority(Priority priority) {
+        return taskRepository.findByPriority(priority);
+    }
+
+    public List<Task> getTasksByDueDate(Date dueDate) {
+        return taskRepository.findByDueDate(dueDate);
+    }
+
+    public List<Task> getTasksByCompletionStatus(boolean completed) {
+        return taskRepository.findByCompleted(completed);
+    }
+
+    public List<Task> getTasksByAssignedUser(User user) {
+        return taskRepository.findByAssignedTo(user);
+    }
+
+    public List<Task> getTasksByAssignedTeam(Team team) {
+        return taskRepository.findByTeam(team);
+    }
 
 }
