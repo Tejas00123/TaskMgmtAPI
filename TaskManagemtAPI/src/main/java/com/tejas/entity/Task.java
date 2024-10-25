@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -46,6 +48,17 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;  // Ensure this field exists and is correctly mapped
+    
+    @ManyToMany
+    @JoinTable(
+        name = "task_dependencies",
+        joinColumns = @JoinColumn(name = "task_id"),
+        inverseJoinColumns = @JoinColumn(name = "dependent_task_id")
+    )
+    private List<Task> dependentTasks;
+    
+    
+    
     // Getters and Setters
     // ...
 }

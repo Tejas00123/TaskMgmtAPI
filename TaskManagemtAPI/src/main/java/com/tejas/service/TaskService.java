@@ -16,6 +16,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    
     // Create or update a task
     public Task saveOrUpdateTask(Task task) {
         return taskRepository.save(task);
@@ -35,4 +36,55 @@ public class TaskService {
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
+    
+    
+
+    public Task completeTask(Long taskId) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if (!optionalTask.isPresent()) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        
+        Task task = optionalTask.get();
+        
+        // Check dependencies
+        for (Task dependent : task.getDependentTasks()) {
+            if (!dependent.isCompleted()) {
+                throw new IllegalStateException("Cannot complete task with pending dependencies.");
+            }
+        }
+
+        task.setCompleted(true); // Assuming you have a setCompleted method
+        return taskRepository.save(task);
+    }
+    
+    
+ // Save method for creating or updating a task
+    public Task save(Task task) {
+        return taskRepository.save(task);
+    }
+    
+    public Task toggleTaskCompletion(Long taskId) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+        if (!optionalTask.isPresent()) {
+            throw new IllegalArgumentException("Task not found");
+        }
+        
+        Task task = optionalTask.get();
+        
+        // Check if the task can be marked as complete
+        if (!task.isCompleted()) {
+            // Ensure all dependencies are completed
+            for (Task dependent : task.getDependentTasks()) {
+                if (!dependent.isCompleted()) {
+                    throw new IllegalStateException("Cannot complete task with pending dependencies.");
+                }
+            }
+        }
+
+        // Toggle the completed status
+        task.setCompleted(!task.isCompleted());
+        return taskRepository.save(task);
+    }
+
 }
