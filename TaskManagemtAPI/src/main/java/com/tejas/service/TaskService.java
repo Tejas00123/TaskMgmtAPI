@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tejas.entity.Task;
+import com.tejas.entity.Team;
+import com.tejas.entity.User;
 import com.tejas.repository.TaskRepository;
 
 @Service
@@ -86,5 +88,17 @@ public class TaskService {
         task.setCompleted(!task.isCompleted());
         return taskRepository.save(task);
     }
+    
+    
+    public Task assignTaskToUserOrTeam(Long taskId, User user, Team team) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        if (user != null) {
+            task.setAssignedUser(user);
+        } else if (team != null) {
+            task.setAssignedTeam(team);
+        }
+        return taskRepository.save(task);
+    }
+
 
 }

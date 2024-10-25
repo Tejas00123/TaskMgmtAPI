@@ -2,6 +2,8 @@ package com.tejas.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.tejas.enums.Priority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,16 +32,14 @@ public class Task {
     private String title;
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
+    @Enumerated(EnumType.STRING) // Make sure to import the correct Priority enum
+    private Priority priority; // This should refer to the custom Priority enum
 
     private Date dueDate;
 
-    // Many-to-One relationship with User (optional if user assignment is required)
     @ManyToOne
     private User assignedTo;
 
-    // For dependencies, a task can have multiple dependent tasks
     @OneToMany
     private List<Task> dependencies;
 
@@ -47,8 +47,8 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "team_id")
-    private Team team;  // Ensure this field exists and is correctly mapped
-    
+    private Team team;
+
     @ManyToMany
     @JoinTable(
         name = "task_dependencies",
@@ -56,15 +56,10 @@ public class Task {
         inverseJoinColumns = @JoinColumn(name = "dependent_task_id")
     )
     private List<Task> dependentTasks;
-    
-    
-    
-    // Getters and Setters
-    // ...
-}
 
-enum Priority {
-    LOW,
-    MEDIUM,
-    HIGH
+    @ManyToOne
+    private User assignedUser;
+
+    @ManyToOne
+    private Team assignedTeam;
 }

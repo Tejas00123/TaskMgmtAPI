@@ -2,7 +2,8 @@ package com.tejas.entity;
 
 
 import java.util.List;
-import java.util.Set;
+
+import com.tejas.enums.Role;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -46,15 +47,11 @@ public class User {
       name = "user_roles", 
       joinColumns = @JoinColumn(name = "user_id"), 
       inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Roles> roles;  // Ensure this field exists and is correctly named
+    private List<Roles> roles;  // Ensure this field exists and is correctly named
 
     // Getters and Setters
     // ...
 }
 
-enum Role {
-    OWNER,
-    ADMIN,
-    MEMBER
-}
+
 
