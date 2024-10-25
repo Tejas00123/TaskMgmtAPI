@@ -94,6 +94,12 @@
 	    <artifactId>spring-boot-starter-data-jpa</artifactId>
 	</dependency>
 
+	<!-- For realtime updates -->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-websocket</artifactId>
+	</dependency>
+
 	</dependencies>
 
 	<build>
